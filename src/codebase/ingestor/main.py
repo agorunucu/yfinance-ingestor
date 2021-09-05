@@ -5,18 +5,26 @@ from pandas_datareader import data
 
 def main():
     pd.options.display.max_columns = None
-    msft = yf.Tickers("MSFT VOD.L GOOGL")
+    tickers = yf.Tickers("MSFT VOD.L GOOGL")
 
-    # Profile (description, sector, etc.)
-    print(msft.tickers["GOOGL"].info)
+    print(prepare_info(tickers.tickers))
     # Price data for the past 5 years (open, close, low, high, volume) / Daily basis for last 5 years
-    print(msft.tickers["GOOGL"].history(period="5y"))
+    # print(tickers.tickers["GOOGL"].history(period="5y"))
     # Financial indicators (market cap, EPS, P/E ratio, etc)
-    print(data.get_quote_yahoo(msft.tickers))
+    # print(data.get_quote_yahoo(tickers.tickers))
     # Dividend related data (e.g. dividend date, yield)
-    print(msft.tickers["MSFT"].dividends)
+    # print(tickers.tickers["MSFT"].dividends)
     # Earnings related data (e.g. earnings date, revenue)
-    print(msft.tickers["GOOGL"].earnings)
+    # print(tickers.tickers["GOOGL"].earnings)
+
+
+# Profile (description, sector, etc.)
+def prepare_info(tickers):
+    all_info = []
+    for ticker_name in tickers:
+        tickers[ticker_name].info["ticker"] = ticker_name
+        all_info.append(tickers[ticker_name].info)
+    return pd.DataFrame(all_info)
 
 
 if __name__ == '__main__':
