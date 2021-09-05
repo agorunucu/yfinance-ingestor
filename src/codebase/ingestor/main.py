@@ -1,17 +1,18 @@
 import yfinance as yf
 import pandas as pd
 from pandas_datareader import data
+from helper import destination
 
 
 def main():
     pd.options.display.max_columns = None
     tickers = yf.Tickers("MSFT VOD.L GOOGL")
 
-    print(prepare_info(tickers.tickers))
-    print(prepare_history(tickers.tickers))
-    print(data.get_quote_yahoo(tickers.tickers))
-    print(prepare_dividends(tickers.tickers))
-    print(prepare_earnings(tickers.tickers))
+    destination.save(prepare_info(tickers.tickers), "yfinance_info")
+    destination.save(prepare_history(tickers.tickers), "yfinance_history")
+    destination.save(data.get_quote_yahoo(tickers.tickers), "yfinance_indicator")
+    destination.save(prepare_dividends(tickers.tickers), "yfinance_dividend")
+    destination.save(prepare_earnings(tickers.tickers), "yfinance_earning")
 
 
 # Profile (description, sector, etc.)
@@ -20,7 +21,8 @@ def prepare_info(tickers):
     for ticker_name in tickers:
         tickers[ticker_name].info["ticker"] = ticker_name
         all_info.append(tickers[ticker_name].info)
-    return pd.DataFrame(all_info)
+    return pd.DataFrame(all_info)[["shortName", "longName", "sector", "fullTimeEmployees",
+                                   "longBusinessSummary", "city", "state", "country", "website"]]
 
 
 # Price data for the past 5 years (open, close, low, high, volume)
