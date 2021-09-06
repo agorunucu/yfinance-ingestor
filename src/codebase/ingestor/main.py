@@ -1,11 +1,11 @@
 import yfinance as yf
 import pandas as pd
 from pandas_datareader import data
-from helper import destination
+from helper import source, destination
 
 
 def main():
-    pd.options.display.max_columns = None
+    # source.get_ticker_names()
     tickers = yf.Tickers("MSFT VOD.L GOOGL")
 
     destination.save(prepare_info(tickers.tickers), "yfinance_info")
