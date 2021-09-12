@@ -57,3 +57,6 @@ coverage.xml
 docs/_build/
 
 *target*
+*.zip
+
+src/actual_secrets.tfvars

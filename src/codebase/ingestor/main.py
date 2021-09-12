@@ -4,15 +4,16 @@ from pandas_datareader import data
 from helper import source, destination
 
 
-def main():
-    # source.get_ticker_names()
-    tickers = yf.Tickers("MSFT VOD.L GOOGL")
+def main(d, c):
+    tickers = yf.Tickers(source.get_ticker_names())
 
-    destination.save(prepare_info(tickers.tickers), "yfinance_info")
-    destination.save(prepare_history(tickers.tickers), "yfinance_history")
-    destination.save(data.get_quote_yahoo(tickers.tickers), "yfinance_indicator")
-    destination.save(prepare_dividends(tickers.tickers), "yfinance_dividend")
-    destination.save(prepare_earnings(tickers.tickers), "yfinance_earning")
+    connection = destination.open_connection()
+    destination.save(prepare_info(tickers.tickers), "yfinance_info", connection)
+    destination.save(prepare_history(tickers.tickers), "yfinance_history", connection)
+    destination.save(data.get_quote_yahoo(tickers.tickers), "yfinance_indicator", connection)
+    destination.save(prepare_dividends(tickers.tickers), "yfinance_dividend", connection)
+    destination.save(prepare_earnings(tickers.tickers), "yfinance_earning", connection)
+    destination.close_connection(connection)
 
 
 # Profile (description, sector, etc.)
@@ -57,4 +58,4 @@ def prepare_earnings(tickers):
 
 
 if __name__ == '__main__':
-    main()
+    main(None, None)
