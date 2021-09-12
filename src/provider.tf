@@ -7,5 +7,5 @@ terraform {
 
 provider "google" {
   project     = "bux-bi-assignment-agorunucu"
-  region      = "europe-west4"
+  region      = "europe-west2"
 }
